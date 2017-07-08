@@ -71,7 +71,7 @@ public class DrinksListViewAdapter extends RecyclerView.Adapter<DrinksListViewAd
             // - replace the contents of the view with that element
             holder.drinkTitle.setText(mDataset.get(position).getName());
             NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.GERMANY);
-            holder.drinkPrice.setText(formatter.format(mDataset.get(position).getPrice()));
+            holder.drinkPrice.setText(formatter.format(mDataset.get(position).getResellPrice()));
             holder.drinkVolume.setText(String.format("%.2f l",mDataset.get(position).getVolume()));
             holder.drinkImage.setImageDrawable(mDataset.get(position).getImage());
             holder.itemView.setOnClickListener(new View.OnClickListener() {

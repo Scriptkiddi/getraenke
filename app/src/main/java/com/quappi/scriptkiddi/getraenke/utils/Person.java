@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class Person implements Serializable {
     private String firstName;
     private String lastName;
+    private Permissions permissions = new Permissions(true, true, true, true, true);
 
     public Person(String firstName, String lastName) {
         this.firstName = firstName;
@@ -29,5 +30,9 @@ public class Person implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Permissions getPermissions() {
+        return permissions;
     }
 }
