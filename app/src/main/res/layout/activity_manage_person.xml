@@ -17,9 +17,38 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <TextView
-        android:id="@+id/nfc_label"
+        android:id="@+id/user_label"
         style="?android:attr/listSeparatorTextViewStyle"
         android:layout_below="@+id/modify_person_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimaryText"
+        android:text="@string/user_section_label"/>
+
+    <EditText
+        android:id="@+id/firstNameEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textNoSuggestions"
+        android:layout_below="@+id/user_label"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="53dp" />
+
+    <EditText
+        android:id="@+id/lastNameEdit"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:layout_below="@+id/firstNameEdit"
+        android:layout_alignStart="@+id/firstNameEdit" />
+
+    <TextView
+        android:id="@+id/nfc_label"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:layout_below="@+id/lastNameEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/colorPrimaryText"
@@ -32,9 +61,31 @@
         android:layout_below="@+id/nfc_label"
         android:divider="#FFCC00"
         android:dividerHeight="2dp"
-        android:paddingTop="10dp"
         android:scrollbars="vertical"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp" />
+
+    <TextView
+        android:id="@+id/firstNameLabel"
+        android:labelFor="@+id/firstNameEdit"
+        android:layout_marginStart="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/user_label"
+        android:layout_marginTop="10dp"
+        android:text="@string/first_name_label" />
+
+    <TextView
+        android:id="@+id/lastNameLabel"
+        android:labelFor="@+id/lastNameEdit"
+        android:layout_marginStart="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/firstNameEdit"
+        android:layout_marginTop="10dp"
+        android:text="@string/last_name_label" />
+
 
 </android.widget.RelativeLayout>
