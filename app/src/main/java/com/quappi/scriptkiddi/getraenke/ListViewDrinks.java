@@ -1,10 +1,13 @@
 package com.quappi.scriptkiddi.getraenke;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuInflater;
+
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,12 +25,6 @@ public class ListViewDrinks extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private Person person;
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-
-        return true;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,22 +61,31 @@ public class ListViewDrinks extends AppCompatActivity {
         TextView moneyOwed = (TextView) findViewById(R.id.money_owed);
         moneyOwed.setText("Guthaben: 90€");
 
+
         mAdapter = new DrinksListViewAdapter(drinks, this.person);
         mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.drinks_menu_logged_in, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                // User chose the "Settings" item, show the app settings UI...
+            case R.id.check_balance:
                 return true;
-
+            case R.id.manage_person:
+                Intent intent = new Intent(this, ManagePersonActivity.class);
+                intent.putExtra("Person", person);
+                this.startActivity(intent);
+                return true;
             default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
-
         }
     }
 }

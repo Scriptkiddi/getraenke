@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">getraenke</string>
+    <string name="check_balance">check balance</string>
+    <string name="manage_person">manage person</string>
+    <string name="title_activity_manage_person">Manage person</string>
     <string name="action_settings">Settings</string>
 </resources>

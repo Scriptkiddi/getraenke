@@ -8,13 +8,13 @@ import android.graphics.drawable.Drawable;
 
 public class Drink {
     private String name;
-    private double price;
+    private double resellPrice;
     private double volume;
     private Drawable image;
 
-    public Drink(String name, double price, double volume, Drawable image) {
+    public Drink(String name, double resellPrice, double volume, Drawable image) {
         this.name = name;
-        this.price = price;
+        this.resellPrice = resellPrice;
         this.volume = volume;
         this.image = image;
     }
@@ -27,12 +27,12 @@ public class Drink {
         this.name = name;
     }
 
-    public double getPrice() {
-        return price;
+    public double getResellPrice() {
+        return resellPrice;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setResellPrice(double resellPrice) {
+        this.resellPrice = resellPrice;
     }
 
     public double getVolume() {

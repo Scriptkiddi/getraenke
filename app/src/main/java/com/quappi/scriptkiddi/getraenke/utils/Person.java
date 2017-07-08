@@ -9,10 +9,12 @@ import java.io.Serializable;
 public class Person implements Serializable {
     private String firstName;
     private String lastName;
+    private Permissions permissions;
 
-    public Person(String firstName, String lastName) {
+    public Person(String firstName, String lastName, Permissions permissions) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.permissions = permissions;
     }
 
     public String getFirstName() {
@@ -29,5 +31,18 @@ public class Person implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Permissions getPermissions() {
+        return permissions;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", permissions=" + permissions +
+                '}';
     }
 }
