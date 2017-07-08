@@ -22,7 +22,6 @@
         android:layout_height="wrap_content"
         tools:layout_editor_absoluteY="8dp"
         tools:layout_editor_absoluteX="8dp" />
-
     <android.support.v7.widget.Toolbar
         android:id="@+id/info_toolbar"
         android:layout_alignParentBottom="true"
@@ -53,6 +52,21 @@
                 android:textColor="@color/colorPrimaryText" />
 
         </RelativeLayout>
-        </android.support.v7.widget.Toolbar>
+    </android.support.v7.widget.Toolbar>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_above="@id/info_toolbar"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:paddingRight="30dp"
+        android:paddingBottom="30dp"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@drawable/ic_action_barcode_1"/>
+
+
+
+
 
 </android.widget.RelativeLayout>

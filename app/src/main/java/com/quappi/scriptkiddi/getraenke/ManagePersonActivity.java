@@ -15,8 +15,8 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
 
+import com.quappi.scriptkiddi.getraenke.utils.exception.InvalidPersonException;
 import com.quappi.scriptkiddi.getraenke.adapter.NfcTagListViewAdapter;
-import com.quappi.scriptkiddi.getraenke.utils.InvalidPersonException;
 import com.quappi.scriptkiddi.getraenke.utils.NfcTagRegister;
 import com.quappi.scriptkiddi.getraenke.utils.Person;
 

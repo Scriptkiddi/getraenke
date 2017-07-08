@@ -11,18 +11,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
-import android.util.Log;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-
 import com.quappi.scriptkiddi.getraenke.adapter.PeopleListViewAdapter;
-import com.quappi.scriptkiddi.getraenke.utils.Permissions;
+import com.quappi.scriptkiddi.getraenke.controller.personController;
+import com.quappi.scriptkiddi.getraenke.caches.PersonCache;
+import com.quappi.scriptkiddi.getraenke.events.PersonUpdated;
 import com.quappi.scriptkiddi.getraenke.utils.Person;
 import com.quappi.scriptkiddi.getraenke.utils.NfcTagRegister;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +39,7 @@ public class ListViewPeople extends AppCompatActivity implements SearchView.OnQu
     private PendingIntent pendingIntent;
     private static final String TAG = "ListViewPeople";
     private ArrayList<Person> people = new ArrayList<>();
+    private PersonCache cache = PersonCache.getInstance();
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -52,6 +57,7 @@ public class ListViewPeople extends AppCompatActivity implements SearchView.OnQu
         switch (item.getItemId()) {
             case R.id.action_settings:
                 // User chose the "Settings" item, show the app settings UI...
+
                 return true;
 
             default:
@@ -79,14 +85,8 @@ public class ListViewPeople extends AppCompatActivity implements SearchView.OnQu
         setSupportActionBar(myToolbar);
 
 
-        // specify an adapter
-        ArrayList<Person> people = new ArrayList<>();
-        Permissions userPermission = new Permissions(false, false, false, false, true);
-        people.add(new Person("Michel", "weitbrecht", userPermission));
-        people.add(new Person("Fritz", "weitbrecht", userPermission));
-        people.add(new Person("Janne", "weitbrecht", userPermission));
-        people.add(new Person("Pi", "weitbrecht", userPermission));
-        people.add(new Person("Jonas", "weitbrecht", userPermission));
+
+
         mAdapter = new PeopleListViewAdapter(people);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -97,6 +97,8 @@ public class ListViewPeople extends AppCompatActivity implements SearchView.OnQu
             pendingIntent = PendingIntent.getActivity(this, 0,
                     new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
         }
+
+        PersonCache.getInstance().refreshUserList();
     }
 
 
@@ -107,6 +109,10 @@ public class ListViewPeople extends AppCompatActivity implements SearchView.OnQu
             //TODO check if adapter is enabled
             nfcAdapter.enableForegroundDispatch(this, pendingIntent, null, null);
         }
+        ArrayList<Person> personArrayList = new ArrayList<>();
+        personArrayList.addAll(personController.getAll());
+        mAdapter.add(personArrayList);
+
     }
 
     @Override
@@ -118,6 +124,23 @@ public class ListViewPeople extends AppCompatActivity implements SearchView.OnQu
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(PersonUpdated event) {
+        mAdapter.add(event.getPerson());
+    }
+
+        @Override
     public boolean onQueryTextChange(String query) {
         final List<Person> filteredModelList = filter(people, query);
         mAdapter.replaceAll(filteredModelList);
@@ -127,7 +150,6 @@ public class ListViewPeople extends AppCompatActivity implements SearchView.OnQu
 
     private static List<Person> filter(List<Person> models, String query) {
         final String lowerCaseQuery = query.toLowerCase();
-
         final List<Person> filteredModelList = new ArrayList<>();
         for (Person model : models) {
             final String text = model.getFirstName().toLowerCase();

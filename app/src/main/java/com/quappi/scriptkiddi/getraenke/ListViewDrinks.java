@@ -2,17 +2,21 @@ package com.quappi.scriptkiddi.getraenke;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.MenuInflater;
-
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.quappi.scriptkiddi.getraenke.adapter.DrinksListViewAdapter;
 import com.quappi.scriptkiddi.getraenke.utils.Drink;
 import com.quappi.scriptkiddi.getraenke.utils.Person;
@@ -59,11 +63,18 @@ public class ListViewDrinks extends AppCompatActivity {
         TextView user = (TextView) findViewById(R.id.user);
         user.setText(String.format("User: %s %s",person.getFirstName(), person.getLastName()));
         TextView moneyOwed = (TextView) findViewById(R.id.money_owed);
-        moneyOwed.setText("Guthaben: 90€");
+        moneyOwed.setText(String.format("Guthaben: %.2f €", person.getCredit()));
 
 
         mAdapter = new DrinksListViewAdapter(drinks, this.person);
         mRecyclerView.setAdapter(mAdapter);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new IntentIntegrator(ListViewDrinks.this).initiateScan();
+            }
+        });
     }
 
     @Override
@@ -86,6 +97,22 @@ public class ListViewDrinks extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    // Get the results:
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if(result != null) {
+            if(result.getContents() == null) {
+                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 }
