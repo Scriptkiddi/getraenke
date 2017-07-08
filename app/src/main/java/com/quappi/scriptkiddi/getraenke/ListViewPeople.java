@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -21,7 +22,7 @@ import android.view.MenuItem;
 import com.quappi.scriptkiddi.getraenke.adapter.PeopleListViewAdapter;
 import com.quappi.scriptkiddi.getraenke.utils.Permissions;
 import com.quappi.scriptkiddi.getraenke.utils.Person;
-import com.quappi.scriptkiddi.getraenke.utils.TagRegister;
+import com.quappi.scriptkiddi.getraenke.utils.NfcTagRegister;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,12 +30,11 @@ import java.util.List;
 public class ListViewPeople extends AppCompatActivity implements SearchView.OnQueryTextListener {
     private RecyclerView mRecyclerView;
     private PeopleListViewAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private LinearLayoutManager mLayoutManager;
     private NfcAdapter nfcAdapter;
     private PendingIntent pendingIntent;
     private static final String TAG = "ListViewPeople";
     private ArrayList<Person> people = new ArrayList<>();
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -67,14 +67,13 @@ public class ListViewPeople extends AppCompatActivity implements SearchView.OnQu
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_view_people);
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        //mRecyclerView.setHasFixedSize(true);
-
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
+                mLayoutManager.getOrientation());
+        mRecyclerView.addItemDecoration(dividerItemDecoration);
+
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
@@ -149,8 +148,8 @@ public class ListViewPeople extends AppCompatActivity implements SearchView.OnQu
         super.onNewIntent(intent);
         if (intent != null && NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
             Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-            Log.d(TAG, "scanned tag: " + TagRegister.getInstance().getNfcTagId(tag));
-            Person detectedPerson = TagRegister.getInstance().getPersonForTag(tag);
+            Log.d(TAG, "scanned tag: " + NfcTagRegister.getInstance().getNfcTagId(tag));
+            Person detectedPerson = NfcTagRegister.getInstance().getPersonForTag(tag);
             if (detectedPerson != null) {
                 Log.d(TAG, "detected person: " + detectedPerson);
                 Intent listViewIntent = new Intent(this.getApplicationContext(), ListViewDrinks.class);

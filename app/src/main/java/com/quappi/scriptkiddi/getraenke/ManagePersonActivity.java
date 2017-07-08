@@ -8,30 +8,50 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
+import com.quappi.scriptkiddi.getraenke.adapter.NfcTagListViewAdapter;
 import com.quappi.scriptkiddi.getraenke.utils.InvalidPersonException;
-import com.quappi.scriptkiddi.getraenke.utils.PermissionDeniedException;
-import com.quappi.scriptkiddi.getraenke.utils.Permissions;
+import com.quappi.scriptkiddi.getraenke.utils.NfcTagRegister;
 import com.quappi.scriptkiddi.getraenke.utils.Person;
-import com.quappi.scriptkiddi.getraenke.utils.TagRegister;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class ManagePersonActivity extends AppCompatActivity {
     private Person person;
     private boolean canAddTag = false;
     private Tag scannedTag = null;
-    public static final String TAG = "NfcActivity";
+    public static final String TAG = "ManagePersonActivity";
     private NfcAdapter nfcAdapter;
     private PendingIntent pendingIntent;
+
+    private RecyclerView mRecyclerView;
+    private LinearLayoutManager mLayoutManager;
+    private NfcTagListViewAdapter nfcTagAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_person);
+
+        this.person = (Person) getIntent().getSerializableExtra("Person");
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.nfc_tag_list_view);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
+                mLayoutManager.getOrientation());
+        mRecyclerView.addItemDecoration(dividerItemDecoration);
+
+        List<String> registeredTags = NfcTagRegister.getInstance().getTagIdsForPerson(person);
+        Log.d(TAG, registeredTags.toString());
+        nfcTagAdapter = new NfcTagListViewAdapter(registeredTags, person);
+        mRecyclerView.setAdapter(nfcTagAdapter);
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if (nfcAdapter == null) {
@@ -43,12 +63,6 @@ public class ManagePersonActivity extends AppCompatActivity {
 
         pendingIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-
-        this.person = (Person) getIntent().getSerializableExtra("Person");
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(person.getFirstName() + " " + person.getLastName());
-        setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -85,9 +99,9 @@ public class ManagePersonActivity extends AppCompatActivity {
         super.onNewIntent(intent);
         if (intent != null && NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
             Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-            Log.d(TAG, "scanned tag: " + TagRegister.getInstance().getNfcTagId(tag));
+            Log.d(TAG, "scanned tag: " + NfcTagRegister.getInstance().getNfcTagId(tag));
             if (canAddTag) {
-                if (TagRegister.getInstance().getPersonForTag(tag) != null) {
+                if (NfcTagRegister.getInstance().getPersonForTag(tag) != null) {
                     Snackbar.make(findViewById(android.R.id.content), "This NFC tag is already registered.", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 } else if (scannedTag != null) {
@@ -95,14 +109,12 @@ public class ManagePersonActivity extends AppCompatActivity {
                         Snackbar.make(findViewById(android.R.id.content), "NFC tag verification failed! Please scan again", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                     } else {
-                        Person admin = new Person("Admin", "Admin", new Permissions(true, true, true, true, true));
                         try {
-                            TagRegister.getInstance().addNfcTag(admin, scannedTag, person);
+                            NfcTagRegister.getInstance().addNfcTag(scannedTag, person);
                             Snackbar.make(findViewById(android.R.id.content), "NFC tag added successfully.", Snackbar.LENGTH_LONG)
                                     .setAction("Action", null).show();
-                        } catch (PermissionDeniedException e) {
-                            Snackbar.make(findViewById(android.R.id.content), "No permission to add NFC tag!", Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null).show();
+                            nfcTagAdapter.replaceAll(NfcTagRegister.getInstance().getTagIdsForPerson(person));
+                            mRecyclerView.scrollToPosition(0);
                         } catch (InvalidPersonException e) {
                             Snackbar.make(findViewById(android.R.id.content), "Invalid person!", Snackbar.LENGTH_LONG)
                                     .setAction("Action", null).show();
