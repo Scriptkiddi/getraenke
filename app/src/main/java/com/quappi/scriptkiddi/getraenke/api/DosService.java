@@ -1,5 +1,6 @@
 package com.quappi.scriptkiddi.getraenke.api;
 
+import com.quappi.scriptkiddi.getraenke.utils.Drink;
 import com.quappi.scriptkiddi.getraenke.utils.Person;
 
 import java.util.List;
@@ -18,4 +19,10 @@ public interface DosService {
 
     @GET("user/{user}")
     Call<Person> getUser(@Path("user") String user);
+
+    @GET("drink")
+    Call<List<String>> listDrinks();
+
+    @GET("drink/{ean}")
+    Call<Drink> getDrink(@Path("ean") String ean);
 }
