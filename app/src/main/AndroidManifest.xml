@@ -27,7 +27,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".ListViewDrinks" />
         <activity
             android:name=".ManagePersonActivity"
             android:label="@string/title_activity_manage_person"
@@ -37,7 +36,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".ListViewPeople" />
         <activity android:name=".ListViewDrinks" android:parentActivityName=".ListViewPeople" >
             ></activity>
     </application>
