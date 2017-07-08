@@ -1,33 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.quappi.scriptkiddi.getraenke.ManagePersonActivity">
+    <!-- Dummy view -->
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"/>
+    
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/modify_person_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        android:text="@string/modify_person_title"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-    <android.support.design.widget.AppBarLayout
+    <TextView
+        android:id="@+id/user_label"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:layout_below="@+id/modify_person_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:textColor="@color/colorPrimaryText"
+        android:text="@string/user_section_label"/>
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-    </android.support.design.widget.AppBarLayout>
-
-    <include layout="@layout/content_manage_person" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+    <EditText
+        android:id="@+id/firstNameEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/nfc_variant"/>
+        android:ems="10"
+        android:inputType="textNoSuggestions"
+        android:layout_below="@+id/user_label"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="53dp" />
 
-</android.support.design.widget.CoordinatorLayout>
+    <EditText
+        android:id="@+id/lastNameEdit"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:layout_below="@+id/firstNameEdit"
+        android:layout_alignStart="@+id/firstNameEdit" />
+
+    <TextView
+        android:id="@+id/nfc_label"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:layout_below="@+id/lastNameEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimaryText"
+        android:text="@string/nfc_tags_section_label"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/nfc_tag_list_view"
+        android:layout_width="fill_parent"
+        android:layout_height="410dp"
+        android:layout_below="@+id/nfc_label"
+        android:divider="#FFCC00"
+        android:dividerHeight="2dp"
+        android:scrollbars="vertical"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp" />
+
+    <TextView
+        android:id="@+id/firstNameLabel"
+        android:labelFor="@+id/firstNameEdit"
+        android:layout_marginStart="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/user_label"
+        android:layout_marginTop="10dp"
+        android:text="@string/first_name_label" />
+
+    <TextView
+        android:id="@+id/lastNameLabel"
+        android:labelFor="@+id/lastNameEdit"
+        android:layout_marginStart="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/firstNameEdit"
+        android:layout_marginTop="10dp"
+        android:text="@string/last_name_label" />
+
+
+</android.widget.RelativeLayout>
