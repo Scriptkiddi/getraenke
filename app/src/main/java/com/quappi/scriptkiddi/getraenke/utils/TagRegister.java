@@ -14,6 +14,18 @@ import java.util.Map;
 public class TagRegister {
     private HashMap<String, Person> personByTag = new HashMap<>();
     private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
+    private static TagRegister instance = null;
+
+    private TagRegister() {
+
+    }
+
+    public static TagRegister getInstance() {
+        if (instance == null) {
+            instance = new TagRegister();
+        }
+        return instance;
+    }
 
     /**
      * @param editor the user that attempts to add a NFC tag
@@ -22,7 +34,7 @@ public class TagRegister {
      * @throws PermissionDeniedException if editor user has no permission to modify user
      * @throws InvalidPersonException    if the person does not exist
      */
-    private void addNfcTag(Person editor, Tag tag, Person target) throws PermissionDeniedException, InvalidPersonException {
+    public void addNfcTag(Person editor, Tag tag, Person target) throws PermissionDeniedException, InvalidPersonException {
         if (!editor.getPermissions().canModifyUsers()) {
             throw new PermissionDeniedException();
         } else if (target == null) {

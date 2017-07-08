@@ -40,4 +40,15 @@ public class Permissions implements Serializable {
     public boolean canSetOwnPassword() {
         return setOwnPass;
     }
+
+    @Override
+    public String toString() {
+        return "Permissions{" +
+                "patchDrinkAll=" + patchDrinkAll +
+                ", modSupplier=" + modSupplier +
+                ", modDrink=" + modDrink +
+                ", modUser=" + modUser +
+                ", setOwnPass=" + setOwnPass +
+                '}';
+    }
 }
