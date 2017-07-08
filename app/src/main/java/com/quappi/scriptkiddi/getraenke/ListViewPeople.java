@@ -57,7 +57,6 @@ public class ListViewPeople extends AppCompatActivity implements SearchView.OnQu
         switch (item.getItemId()) {
             case R.id.action_settings:
                 // User chose the "Settings" item, show the app settings UI...
-
                 return true;
 
             default:
@@ -79,7 +78,6 @@ public class ListViewPeople extends AppCompatActivity implements SearchView.OnQu
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(),
                 mLayoutManager.getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
-
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
