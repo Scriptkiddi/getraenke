@@ -1,4 +1,4 @@
-package com.quappi.scriptkiddi.getraenke.dataStorage;
+package com.quappi.scriptkiddi.getraenke.caches;
 
 import android.util.Log;
 
@@ -6,6 +6,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.quappi.scriptkiddi.getraenke.api.DosService;
+import com.quappi.scriptkiddi.getraenke.controller.personController;
 import com.quappi.scriptkiddi.getraenke.events.PersonUpdated;
 import com.quappi.scriptkiddi.getraenke.events.UserListUpdated;
 import com.quappi.scriptkiddi.getraenke.utils.Person;
@@ -75,26 +76,26 @@ public class PersonCache {
     @Subscribe
     public void updateAllUsers(UserListUpdated event) {
         for(String username: list_of_users){
-                service.getUser(username).enqueue(new Callback<Person>() {
-                    @Override
-                    public void onResponse(Call<Person> call, Response<Person> response) {
-                        if(response.code() == 200){
-                                Log.e(TAG, Boolean.toString(response.body() == null ));
-                            Person p = response.body();
-
-                            Log.e(TAG, p.getPermissions().toString());
-                                //people.put(response.body().getUsername(), response.body());
-                                EventBus.getDefault().post(new PersonUpdated(response.body()));
-
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Person> call, Throwable t) {
-                        Log.e(TAG, t.getMessage());
-                    }
-                });
+                updateUser(username);
         }
+    }
+
+    public void updateUser(String username){
+        service.getUser(username).enqueue(new Callback<Person>() {
+            @Override
+            public void onResponse(Call<Person> call, Response<Person> response) {
+                if(response.code() == 200){
+                    Log.e(TAG, Boolean.toString(response.body() == null ));
+                    people.put(response.body().getUsername(), response.body());
+                    personController.put(response.body().getUsername(), response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Person> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
+            }
+        });
     }
 
     public Collection<Person> getAll(){

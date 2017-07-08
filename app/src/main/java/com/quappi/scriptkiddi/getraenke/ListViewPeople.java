@@ -16,7 +16,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.quappi.scriptkiddi.getraenke.adapter.PeopleListViewAdapter;
-import com.quappi.scriptkiddi.getraenke.dataStorage.PersonCache;
+import com.quappi.scriptkiddi.getraenke.controller.personController;
+import com.quappi.scriptkiddi.getraenke.caches.PersonCache;
 import com.quappi.scriptkiddi.getraenke.events.PersonUpdated;
 import com.quappi.scriptkiddi.getraenke.utils.Person;
 import com.quappi.scriptkiddi.getraenke.utils.TagRegister;
@@ -104,8 +105,9 @@ public class ListViewPeople extends AppCompatActivity implements SearchView.OnQu
             nfcAdapter.enableForegroundDispatch(this, pendingIntent, null, null);
         }
         ArrayList<Person> personArrayList = new ArrayList<>();
-        personArrayList.addAll(PersonCache.getInstance().getAll());
+        personArrayList.addAll(personController.getAll());
         mAdapter.add(personArrayList);
+
     }
 
     @Override
