@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/check_balance"
+        android:icon="@drawable/cash_usd"
+        android:title="@string/check_balance"
+        app:showAsAction="ifRoom"/>
+    <item android:id="@+id/manage_person"
+        android:icon="@drawable/account_edit"
+        android:title="@string/manage_person"
+        app:showAsAction="ifRoom"/>
+</menu>

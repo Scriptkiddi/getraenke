@@ -2,7 +2,10 @@ package com.quappi.scriptkiddi.getraenke.utils;
 
 import android.nfc.Tag;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by michel on 7/8/17.
@@ -51,5 +54,15 @@ public class TagRegister {
             hexChars[j * 2 + 1] = hexArray[v & 0x0F];
         }
         return new String(hexChars);
+    }
+
+    public List<String> getTagIdsForPerson(Person p) {
+        ArrayList<String> tagList = new ArrayList<>();
+        for (Map.Entry<String, Person> entry : personByTag.entrySet()) {
+            if (entry.getValue().equals(p)) {
+                tagList.add(entry.getKey());
+            }
+        }
+        return tagList;
     }
 }

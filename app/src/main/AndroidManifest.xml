@@ -17,7 +17,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".ListViewPeople" />
-        <activity android:name=".ListViewDrinks"></activity>
+        <activity android:name=".ListViewDrinks" />
+        <activity
+            android:name=".ManagePersonActivity"
+            android:label="@string/title_activity_manage_person"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
