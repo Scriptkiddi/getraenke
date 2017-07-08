@@ -25,7 +25,6 @@ import java.util.List;
 
 public class ManagePersonActivity extends AppCompatActivity {
     private Person person;
-    private boolean canAddTag = false;
     private Tag scannedTag = null;
     public static final String TAG = "ManagePersonActivity";
     private NfcAdapter nfcAdapter;
@@ -129,28 +128,22 @@ public class ManagePersonActivity extends AppCompatActivity {
             if (NfcTagRegister.getInstance().getPersonForTag(tag) != null) {
                 Snackbar.make(findViewById(android.R.id.content), "This NFC tag is already registered.", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-            } else if (scannedTag != null) {
-                if (!Arrays.equals(scannedTag.getId(), tag.getId())) {
-                    Snackbar.make(findViewById(android.R.id.content), "NFC tag verification failed! Please scan again", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                } else {
-                    try {
-                        NfcTagRegister.getInstance().addNfcTag(scannedTag, person);
-                        Snackbar.make(findViewById(android.R.id.content), "NFC tag added successfully.", Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();
-                        nfcTagAdapter.replaceAll(NfcTagRegister.getInstance().getTagIdsForPerson(person));
-                        mRecyclerView.scrollToPosition(0);
-                    } catch (InvalidPersonException e) {
-                        Snackbar.make(findViewById(android.R.id.content), "Invalid person!", Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();
-                    }
-                    scannedTag = null;
-                    canAddTag = false;
-                }
-            } else {
-                scannedTag = tag;
+            } else if (scannedTag == null || !Arrays.equals(scannedTag.getId(), tag.getId())) {
                 Snackbar.make(findViewById(android.R.id.content), "Scan NFC tag again to add it.", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                scannedTag = tag;
+            } else {
+                try {
+                    NfcTagRegister.getInstance().addNfcTag(scannedTag, person);
+                    Snackbar.make(findViewById(android.R.id.content), "NFC tag added successfully.", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    nfcTagAdapter.replaceAll(NfcTagRegister.getInstance().getTagIdsForPerson(person));
+                    mRecyclerView.scrollToPosition(0);
+                } catch (InvalidPersonException e) {
+                    Snackbar.make(findViewById(android.R.id.content), "Invalid person!", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+                scannedTag = null;
             }
         }
     }
