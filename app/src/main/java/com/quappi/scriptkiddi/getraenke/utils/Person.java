@@ -30,6 +30,7 @@ public class Person implements Serializable {
     }
 
     public void setLastName(String lastName) {
+        System.out.println("change last name to "+lastName);
         this.lastName = lastName;
     }
 

@@ -10,7 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.widget.EditText;
 
 import com.quappi.scriptkiddi.getraenke.adapter.NfcTagListViewAdapter;
 import com.quappi.scriptkiddi.getraenke.utils.InvalidPersonException;
@@ -61,6 +64,42 @@ public class ManagePersonActivity extends AppCompatActivity {
 
         pendingIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+
+        final EditText firstNameEdit = (EditText) findViewById(R.id.firstNameEdit);
+        firstNameEdit.setText(person.getFirstName());
+        firstNameEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int count, int after) {
+                person.setFirstName(firstNameEdit.getText().toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
+        final EditText lastNameEdit = (EditText) findViewById(R.id.lastNameEdit);
+        lastNameEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                person.setLastName(lastNameEdit.getText().toString());
+            }
+        });
+        lastNameEdit.setText(person.getLastName());
+
     }
 
     @Override
