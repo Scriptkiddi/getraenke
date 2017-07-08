@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -155,6 +156,9 @@ public class ListViewPeople extends AppCompatActivity implements SearchView.OnQu
                 Intent listViewIntent = new Intent(this.getApplicationContext(), ListViewDrinks.class);
                 listViewIntent.putExtra("Person", detectedPerson);
                 this.startActivity(listViewIntent);
+            }else{
+                Snackbar.make(findViewById(android.R.id.content), "This NFC tag is not registered.", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
         }
     }
