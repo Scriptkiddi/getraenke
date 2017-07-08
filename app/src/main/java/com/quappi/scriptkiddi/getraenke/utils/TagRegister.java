@@ -2,6 +2,9 @@ package com.quappi.scriptkiddi.getraenke.utils;
 
 import android.nfc.Tag;
 
+import com.quappi.scriptkiddi.getraenke.utils.exception.InvalidPersonException;
+import com.quappi.scriptkiddi.getraenke.utils.exception.PermissionDeniedException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

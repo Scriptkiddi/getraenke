@@ -12,8 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
-import com.quappi.scriptkiddi.getraenke.utils.InvalidPersonException;
-import com.quappi.scriptkiddi.getraenke.utils.PermissionDeniedException;
+import com.quappi.scriptkiddi.getraenke.utils.exception.InvalidPersonException;
+import com.quappi.scriptkiddi.getraenke.utils.exception.PermissionDeniedException;
 import com.quappi.scriptkiddi.getraenke.utils.Permissions;
 import com.quappi.scriptkiddi.getraenke.utils.Person;
 import com.quappi.scriptkiddi.getraenke.utils.TagRegister;
