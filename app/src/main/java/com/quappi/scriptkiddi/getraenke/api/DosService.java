@@ -7,10 +7,12 @@ import android.preference.PreferenceManager;
 import android.util.Base64;
 import android.util.Log;
 
+import com.quappi.scriptkiddi.getraenke.Constants;
 import com.quappi.scriptkiddi.getraenke.LoginCallback;
 import com.quappi.scriptkiddi.getraenke.utils.Drink;
 import com.quappi.scriptkiddi.getraenke.utils.Permissions;
 import com.quappi.scriptkiddi.getraenke.utils.Person;
+import com.quappi.scriptkiddi.getraenke.utils.Supplier;
 import com.quappi.scriptkiddi.getraenke.utils.Token;
 import com.quappi.scriptkiddi.getraenke.utils.exception.WrongPasswordException;
 
@@ -39,7 +41,7 @@ public class DosService {
     protected DosService(Context context) {
         retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl("http://35.156.87.172:9080/")
+                .baseUrl(Constants.baseURL)
                 .build();
         service = retrofit.create(DosServiceInterface.class);
 
@@ -137,5 +139,13 @@ public class DosService {
 
     public Call<Permissions> getPermission(String permission){
         return service.getPermission(permission, authHeader);
+    }
+
+    public Call<List<Integer>> getSuppliers(){
+        return service.getSuplliers(authHeader);
+    }
+
+    public Call<Supplier> getSupplier(int permission){
+        return service.getSupplier(permission, authHeader);
     }
 }

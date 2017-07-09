@@ -46,7 +46,10 @@
             android:parentActivityName=".ListViewPeople">
             >
         </activity>
-        <activity android:name=".LoginActivity" android:theme="@style/AppTheme"></activity>
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".PayActivity"></activity>
     </application>
 
 </manifest>

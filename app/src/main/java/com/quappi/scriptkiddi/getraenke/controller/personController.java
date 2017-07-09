@@ -29,27 +29,27 @@ public class personController {
     private static HashMap<String, Person> personHashMap = new HashMap<>();
     private static ArrayList<String> personList = new ArrayList<>();
 
-    public static void init(final Context context){
-        Log.e(TAG, "test3");
+    public static void init(final Context context) {
         DosService.getInstance(context).getUsers().enqueue(new Callback<List<String>>() {
             @Override
             public void onResponse(Call<List<String>> call, Response<List<String>> response) {
 
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
 
                     for(String s: response.body()){
-                        DosService.getInstance(context).getUser(s).enqueue(new Callback<Person>() {
+                        personList.add(s);
+                         DosService.getInstance(context).getUser(s).enqueue(new Callback<Person>() {
                             @Override
                             public void onResponse(Call<Person> call, Response<Person> response) {
-                                if (response.isSuccessful()){
+                                if (response.isSuccessful()) {
                                     Person p = response.body();
                                     p.setPermissions(permissionsController.get(p.getPermissionGroup()));
                                     personHashMap.put(response.body().getUsername(), p);
                                     EventBus.getDefault().post(new PersonUpdated(response.body()));
-                                }else{
-                                    Log.e(TAG, "Errorcode "+Integer.toString(response.code()));
+                                } else {
+                                    Log.e(TAG, "Errorcode " + Integer.toString(response.code()));
                                 }
-                                if(personList.size()==personHashMap.size()){
+                                if (personList.size() == personHashMap.size()) {
                                     EventBus.getDefault().post(new PersonControllerInitFinished());
                                 }
                             }
@@ -73,32 +73,32 @@ public class personController {
 
     }
 
-    public static void add(Person person){
+    public static void add(Person person) {
         personHashMap.put(person.getUsername(), person);
     }
 
-    public static void put(String username, Person person){
-        if(personHashMap.containsKey(username)){
-            if(!personHashMap.get(username).equals(person)){
+    public static void put(String username, Person person) {
+        if (personHashMap.containsKey(username)) {
+            if (!personHashMap.get(username).equals(person)) {
                 //TODO push to server
                 personHashMap.put(username, person);
                 EventBus.getDefault().post(new PersonUpdated(person));
             }
-        }else{
+        } else {
             personHashMap.put(username, person);
             EventBus.getDefault().post(new PersonUpdated(person));
         }
     }
 
-    public static void remove(String username){
+    public static void remove(String username) {
         personHashMap.remove(username);
     }
 
-    public static Person get(String username){
+    public static Person get(String username) {
         return personHashMap.get(username);
     }
 
-    public static Collection<Person> getAll(){
+    public static Collection<Person> getAll() {
         return personHashMap.values();
     }
 

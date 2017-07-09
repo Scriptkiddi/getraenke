@@ -16,14 +16,25 @@ public class Drink {
     @SerializedName("PriceResell")
     private double resellPrice;
     @SerializedName("Amount")
+    private int amountInStock;
     private double volume;
-    private Drawable image;
 
-    public Drink(String name, double resellPrice, double volume, Drawable image) {
+
+    //private Drawable image;
+    @SerializedName("Supplier")
+    private Supplier supplier;
+
+
+    private Integer supplierID;
+    @SerializedName("ImgUrl")
+    private String imgURL;
+
+    public Drink(String ean, String name, double resellPrice, double volume, String imgURL) {
+        this.ean = ean;
         this.name = name;
         this.resellPrice = resellPrice;
         this.volume = volume;
-        this.image = image;
+        this.imgURL = imgURL;
     }
 
     public String getName() {
@@ -51,6 +62,22 @@ public class Drink {
     }
 
     public Drawable getImage() {
-        return image;
+        return null;
+    }
+
+    public String getEan() {
+        return ean;
+    }
+
+    public void setEan(String ean) {
+        this.ean = ean;
+    }
+
+    public String getImgURL() {
+        return imgURL;
+    }
+
+    public void setImgURL(String imgURL) {
+        this.imgURL = imgURL;
     }
 }
