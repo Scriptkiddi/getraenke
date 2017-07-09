@@ -104,9 +104,12 @@ public class ListViewDrinks extends AppCompatActivity{
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.check_balance:
+                Intent intent = new Intent(this, PayActivity.class);
+                intent.putExtra("Person", person);
+                this.startActivity(intent);
                 return true;
             case R.id.manage_person:
-                Intent intent = new Intent(this, ManagePersonActivity.class);
+                intent = new Intent(this, ManagePersonActivity.class);
                 intent.putExtra("Person", person);
                 this.startActivity(intent);
                 return true;
