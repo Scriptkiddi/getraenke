@@ -47,7 +47,7 @@ public class Person implements Serializable {
     }
 
     public void setLastName(String lastName) {
-        System.out.println("change last name to "+lastName);
+        System.out.println("change last name to " + lastName);
         this.lastName = lastName;
     }
 
@@ -82,6 +82,7 @@ public class Person implements Serializable {
 
     public void setPermissionGroup(String permissionGroup) {
         this.permissionGroup = permissionGroup;
+    }
 
     @Override
     public boolean equals(Object o) {
