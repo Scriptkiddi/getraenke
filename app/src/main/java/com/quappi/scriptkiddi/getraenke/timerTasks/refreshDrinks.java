@@ -3,7 +3,6 @@ package com.quappi.scriptkiddi.getraenke.timerTasks;
 import android.content.Context;
 
 import com.quappi.scriptkiddi.getraenke.api.DosService;
-import com.quappi.scriptkiddi.getraenke.caches.DrinkCache;
 
 import java.util.List;
 import java.util.TimerTask;
@@ -28,7 +27,7 @@ public class refreshDrinks extends TimerTask {
             @Override
             public void onResponse(Call<List<String>> call, Response<List<String>> response) {
                 if (response.isSuccessful()){
-                    DrinkCache.getInstance(context).updateListDrinks(response.body());
+                    //DrinkCache.getInstance(context).updateListDrinks(response.body());
                 }
             }
 

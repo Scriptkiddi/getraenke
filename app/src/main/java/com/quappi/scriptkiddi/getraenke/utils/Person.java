@@ -18,6 +18,7 @@ public class Person implements Serializable {
     @SerializedName("Credit")
     private Double credit;
     @SerializedName("Permissions")
+    private String permissionGroup;
     private Permissions permissions;
 
     public Person(String firstName, String lastName, Permissions permissions) {
@@ -71,5 +72,13 @@ public class Person implements Serializable {
 
     public void setCredit(Double credit) {
         this.credit = credit;
+    }
+
+    public String getPermissionGroup() {
+        return permissionGroup;
+    }
+
+    public void setPermissionGroup(String permissionGroup) {
+        this.permissionGroup = permissionGroup;
     }
 }

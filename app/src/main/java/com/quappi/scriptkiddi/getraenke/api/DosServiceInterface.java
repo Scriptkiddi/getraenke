@@ -1,7 +1,10 @@
 package com.quappi.scriptkiddi.getraenke.api;
 
 import com.quappi.scriptkiddi.getraenke.utils.Drink;
+import com.quappi.scriptkiddi.getraenke.utils.Permissions;
 import com.quappi.scriptkiddi.getraenke.utils.Person;
+import com.quappi.scriptkiddi.getraenke.utils.Supplier;
+import com.quappi.scriptkiddi.getraenke.utils.Token;
 
 import java.util.List;
 
@@ -15,18 +18,31 @@ import retrofit2.http.Path;
  */
 
 public interface DosServiceInterface {
-    @GET("user")
+    @GET("users")
     Call<List<String>> listUsers(@Header("Authorization") String authHeader);
 
-    @GET("user/{user}")
+    @GET("users/{user}")
     Call<Person> getUser(@Path("user") String user,@Header("Authorization") String authHeader);
 
-    @GET("drink")
+    @GET("drinks")
     Call<List<String>> listDrinks(@Header("Authorization") String authHeader);
 
-    @GET("drink/{ean}")
+    @GET("drinks/{ean}")
     Call<Drink> getDrink(@Path("ean") String ean, @Header("Authorization") String authHeader);
 
     @GET("tokens")
-    Call<String> getToken(@Header("Authorization") String base64UsernamePassword);
+    Call<Token> getToken(@Header("Authorization") String base64UsernamePassword);
+
+    @GET("permissions")
+    Call<List<String>> getPermissions(@Header("Authorization") String base64UsernamePassword);
+
+    @GET("permissions/{permission}")
+    Call<Permissions> getPermission(@Path("permission") String permission, @Header("Authorization") String authHeader);
+
+    @GET("suppliers")
+    Call<List<Integer>> getSuplliers(@Header("Authorization") String base64UsernamePassword);
+
+    @GET("suppliers/{supplier}")
+    Call<Supplier> getSupplier(@Path("supplier") Integer supplier_id, @Header("Authorization") String authHeader);
+
 }

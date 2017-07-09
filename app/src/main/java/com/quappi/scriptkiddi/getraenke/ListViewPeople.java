@@ -16,11 +16,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.quappi.scriptkiddi.getraenke.adapter.PeopleListViewAdapter;
+import com.quappi.scriptkiddi.getraenke.controller.permissionsController;
 import com.quappi.scriptkiddi.getraenke.controller.personController;
-import com.quappi.scriptkiddi.getraenke.caches.PersonCache;
+import com.quappi.scriptkiddi.getraenke.controller.supplierController;
+import com.quappi.scriptkiddi.getraenke.events.PersonControllerInitFinished;
 import com.quappi.scriptkiddi.getraenke.events.PersonUpdated;
 import com.quappi.scriptkiddi.getraenke.utils.Person;
 import com.quappi.scriptkiddi.getraenke.utils.TagRegister;
+import com.quappi.scriptkiddi.getraenke.utils.exception.WrongPasswordException;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -37,7 +40,6 @@ public class ListViewPeople extends AppCompatActivity implements SearchView.OnQu
     private PendingIntent pendingIntent;
     private static final String TAG = "ListViewPeople";
     private ArrayList<Person> people = new ArrayList<>();
-    private PersonCache cache;
 
 
     @Override
@@ -72,16 +74,10 @@ public class ListViewPeople extends AppCompatActivity implements SearchView.OnQu
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_view_people);
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-        cache = PersonCache.getInstance(getApplicationContext());
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-
-
-
-
         mAdapter = new PeopleListViewAdapter(people);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -93,7 +89,12 @@ public class ListViewPeople extends AppCompatActivity implements SearchView.OnQu
                     new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
         }
 
-        PersonCache.getInstance(getApplicationContext()).refreshUserList();
+        //Start loading everything
+        permissionsController.init(getApplicationContext());
+        supplierController.init(getApplicationContext());
+        //permissions first
+        //then Drinks and People and Suppliers in sync
+
     }
 
 
@@ -133,6 +134,21 @@ public class ListViewPeople extends AppCompatActivity implements SearchView.OnQu
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(PersonUpdated event) {
         mAdapter.add(event.getPerson());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(WrongPasswordException event) {
+
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+    @Subscribe
+    public void onMessageEvent(PersonControllerInitFinished event) {
+        Log.d(TAG, "initPersonController");
+        ArrayList<Person> personArrayList = new ArrayList<>();
+        personArrayList.addAll(personController.getAll());
+        mAdapter.add(personArrayList);
     }
 
         @Override

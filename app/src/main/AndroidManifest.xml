@@ -15,8 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".MainActivity" android:noHistory="true">
-
+        <activity
+            android:name=".MainActivity"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,6 +27,7 @@
         <activity android:name=".ListViewPeople">
             <intent-filter>
                 <action android:name="android.nfc.action.TAG_DISCOVERED" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -35,11 +37,16 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.nfc.action.TAG_DISCOVERED" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".ListViewDrinks" android:parentActivityName=".ListViewPeople" >
-            ></activity>
+        <activity
+            android:name=".ListViewDrinks"
+            android:parentActivityName=".ListViewPeople">
+            >
+        </activity>
+        <activity android:name=".LoginActivity" android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>
