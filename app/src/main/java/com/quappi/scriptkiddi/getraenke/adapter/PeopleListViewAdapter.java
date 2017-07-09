@@ -104,7 +104,7 @@ public class PeopleListViewAdapter extends RecyclerView.Adapter<PeopleListViewAd
     public void onBindViewHolder(ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.mTextView.setText(mSortedList.get(position).getFirstName());
+        holder.mTextView.setText(mSortedList.get(position).getFirstName()+" "+mSortedList.get(position).getLastName());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

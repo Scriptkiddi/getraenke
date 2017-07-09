@@ -78,4 +78,8 @@ public class drinkController {
     public static Collection<? extends Drink> getAll() {
         return drinkHashMap.values();
     }
+
+    public static Drink get(String ean){
+        return drinkHashMap.get(ean);
+    }
 }
