@@ -25,7 +25,6 @@ import com.quappi.scriptkiddi.getraenke.events.PersonControllerInitFinished;
 import com.quappi.scriptkiddi.getraenke.events.PersonUpdated;
 import com.quappi.scriptkiddi.getraenke.utils.Person;
 
-import com.quappi.scriptkiddi.getraenke.utils.TagRegister;
 import com.quappi.scriptkiddi.getraenke.utils.exception.WrongPasswordException;
 import com.quappi.scriptkiddi.getraenke.utils.NfcTagRegister;
 
