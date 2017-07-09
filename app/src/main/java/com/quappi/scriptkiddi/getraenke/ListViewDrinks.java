@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,24 +19,34 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.quappi.scriptkiddi.getraenke.adapter.DrinksListViewAdapter;
+import com.quappi.scriptkiddi.getraenke.controller.drinkController;
+import com.quappi.scriptkiddi.getraenke.events.DrinkControllerInitFinished;
+import com.quappi.scriptkiddi.getraenke.events.DrinkUpdated;
 import com.quappi.scriptkiddi.getraenke.utils.Drink;
 import com.quappi.scriptkiddi.getraenke.utils.Person;
+import com.quappi.scriptkiddi.getraenke.utils.exception.WrongPasswordException;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
-public class ListViewDrinks extends AppCompatActivity {
+public class ListViewDrinks extends AppCompatActivity{
+
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private Person person;
-
+    private ArrayList<Drink> drinks = new ArrayList<>();
+    private final static String TAG = "ViewDrinks";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_view_drinks);
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-
+        drinkController.init(getApplicationContext());
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         mRecyclerView.setHasFixedSize(true);
@@ -53,11 +64,11 @@ public class ListViewDrinks extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter
-        ArrayList<Drink> drinks = new ArrayList<>();
-        drinks.add(new Drink("Club Mate", 1.00, 0.5, getDrawable(R.drawable.club_mate)));
+
+        /*drinks.add(new Drink("Club Mate", 1.00, 0.5, getDrawable(R.drawable.club_mate)));
         drinks.add(new Drink("Paulaner Spezi", 0.70, 0.5, getDrawable(R.drawable.paulaner_spezi)));
         drinks.add(new Drink("Schönbuch Radler", 0.70, 0.33, getDrawable(R.drawable.schoenbuch_naturparkradler)));
-        drinks.add(new Drink("CD Helles", 0.70, 0.33, getDrawable(R.drawable.cd_helles)));
+        drinks.add(new Drink("CD Helles", 0.70, 0.33, getDrawable(R.drawable.cd_helles)));*/
 
         this.person = (Person)getIntent().getSerializableExtra("Person");
         TextView user = (TextView) findViewById(R.id.user);
@@ -75,6 +86,10 @@ public class ListViewDrinks extends AppCompatActivity {
                 new IntentIntegrator(ListViewDrinks.this).initiateScan();
             }
         });
+
+
+
+
     }
 
     @Override
@@ -114,5 +129,37 @@ public class ListViewDrinks extends AppCompatActivity {
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(DrinkUpdated event) {
+        drinks.add(event.getDrink());
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(WrongPasswordException event) {
+
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+    @Subscribe
+    public void onMessageEvent(DrinkControllerInitFinished event) {
+        Log.d(TAG, "initDrinkController");
+        drinks.addAll(drinkController.getAll());
+        mAdapter.notifyDataSetChanged();
     }
 }

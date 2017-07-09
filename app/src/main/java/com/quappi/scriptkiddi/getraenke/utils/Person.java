@@ -82,6 +82,7 @@ public class Person implements Serializable {
 
     public void setPermissionGroup(String permissionGroup) {
         this.permissionGroup = permissionGroup;
+    }
 
     @Override
     public boolean equals(Object o) {

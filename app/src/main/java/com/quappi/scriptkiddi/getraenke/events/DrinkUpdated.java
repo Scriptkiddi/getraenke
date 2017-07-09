@@ -7,6 +7,13 @@ import com.quappi.scriptkiddi.getraenke.utils.Drink;
  */
 
 public class DrinkUpdated {
+    private final Drink drink;
+
     public DrinkUpdated(Drink body) {
+        this.drink = body;
+    }
+
+    public Drink getDrink() {
+        return drink;
     }
 }

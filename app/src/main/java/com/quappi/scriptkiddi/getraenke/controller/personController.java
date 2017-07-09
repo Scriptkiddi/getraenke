@@ -30,7 +30,6 @@ public class personController {
     private static ArrayList<String> personList = new ArrayList<>();
 
     public static void init(final Context context){
-        Log.e(TAG, "test3");
         DosService.getInstance(context).getUsers().enqueue(new Callback<List<String>>() {
             @Override
             public void onResponse(Call<List<String>> call, Response<List<String>> response) {
@@ -38,6 +37,7 @@ public class personController {
                 if (response.isSuccessful()){
 
                     for(String s: response.body()){
+                        personList.add(s);
                         DosService.getInstance(context).getUser(s).enqueue(new Callback<Person>() {
                             @Override
                             public void onResponse(Call<Person> call, Response<Person> response) {

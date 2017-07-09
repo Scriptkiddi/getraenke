@@ -18,16 +18,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.quappi.scriptkiddi.getraenke.adapter.PeopleListViewAdapter;
+import com.quappi.scriptkiddi.getraenke.controller.drinkController;
 import com.quappi.scriptkiddi.getraenke.controller.permissionsController;
 import com.quappi.scriptkiddi.getraenke.controller.personController;
-import com.quappi.scriptkiddi.getraenke.controller.supplierController;
 import com.quappi.scriptkiddi.getraenke.events.PersonControllerInitFinished;
 import com.quappi.scriptkiddi.getraenke.events.PersonUpdated;
-import com.quappi.scriptkiddi.getraenke.utils.Person;
-
-import com.quappi.scriptkiddi.getraenke.utils.TagRegister;
-import com.quappi.scriptkiddi.getraenke.utils.exception.WrongPasswordException;
 import com.quappi.scriptkiddi.getraenke.utils.NfcTagRegister;
+import com.quappi.scriptkiddi.getraenke.utils.Person;
+import com.quappi.scriptkiddi.getraenke.utils.exception.WrongPasswordException;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -100,7 +98,8 @@ public class ListViewPeople extends AppCompatActivity implements SearchView.OnQu
 
         //Start loading everything
         permissionsController.init(getApplicationContext());
-        supplierController.init(getApplicationContext());
+        //supplierController.init(getApplicationContext());
+
         //permissions first
         //then Drinks and People and Suppliers in sync
 

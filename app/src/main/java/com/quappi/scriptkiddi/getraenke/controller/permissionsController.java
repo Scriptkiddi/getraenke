@@ -35,13 +35,10 @@ public class permissionsController {
                         DosService.getInstance(context).getPermission(s).enqueue(new Callback<Permissions>() {
                             @Override
                             public void onResponse(Call<Permissions> call, Response<Permissions> response) {
-                                Log.e(TAG, "test");
                                 if (response.isSuccessful()) {
-                                    Log.e(TAG, "test1");
                                     permissionsHashMap.put(response.body().getType(), response.body());
                                 }
                                 if (permissionsHashMap.size() ==  permissionsList.size()){
-                                    Log.e(TAG, "test2");
                                     personController.init(context);
                                 }
                             }
