@@ -22,6 +22,7 @@ import com.quappi.scriptkiddi.getraenke.adapter.DrinksListViewAdapter;
 import com.quappi.scriptkiddi.getraenke.controller.drinkController;
 import com.quappi.scriptkiddi.getraenke.events.DrinkControllerInitFinished;
 import com.quappi.scriptkiddi.getraenke.events.DrinkUpdated;
+import com.quappi.scriptkiddi.getraenke.events.PersonUpdated;
 import com.quappi.scriptkiddi.getraenke.utils.Drink;
 import com.quappi.scriptkiddi.getraenke.utils.Person;
 import com.quappi.scriptkiddi.getraenke.utils.exception.WrongPasswordException;
@@ -65,11 +66,6 @@ public class ListViewDrinks extends AppCompatActivity{
 
         // specify an adapter
 
-        /*drinks.add(new Drink("Club Mate", 1.00, 0.5, getDrawable(R.drawable.club_mate)));
-        drinks.add(new Drink("Paulaner Spezi", 0.70, 0.5, getDrawable(R.drawable.paulaner_spezi)));
-        drinks.add(new Drink("Schönbuch Radler", 0.70, 0.33, getDrawable(R.drawable.schoenbuch_naturparkradler)));
-        drinks.add(new Drink("CD Helles", 0.70, 0.33, getDrawable(R.drawable.cd_helles)));*/
-
         this.person = (Person)getIntent().getSerializableExtra("Person");
         TextView user = (TextView) findViewById(R.id.user);
         user.setText(String.format("User: %s %s",person.getFirstName(), person.getLastName()));
@@ -77,7 +73,7 @@ public class ListViewDrinks extends AppCompatActivity{
         moneyOwed.setText(String.format("Guthaben: %.2f €", person.getCredit()));
 
 
-        mAdapter = new DrinksListViewAdapter(drinks, this.person);
+        mAdapter = new DrinksListViewAdapter(drinks, this.person, getApplicationContext());
         mRecyclerView.setAdapter(mAdapter);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -154,6 +150,14 @@ public class ListViewDrinks extends AppCompatActivity{
 
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(PersonUpdated event) {
+        TextView moneyOwed = (TextView) findViewById(R.id.money_owed);
+        moneyOwed.setText(String.format("Guthaben: %.2f €", event.getPerson().getCredit()));
+        person = event.getPerson();
     }
 
     @Subscribe

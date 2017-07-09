@@ -11,7 +11,9 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Created by fritz on 08.07.17.
@@ -44,5 +46,11 @@ public interface DosServiceInterface {
 
     @GET("suppliers/{supplier}")
     Call<Supplier> getSupplier(@Path("supplier") Integer supplier_id, @Header("Authorization") String authHeader);
+
+    @POST("drinks/{ean}/order")
+    Call<Void> orderDrink(@Path("ean") String ean, @Header("Authorization") String authHeader);
+
+    @POST("drinks/{ean}/order")
+    Call<Void> orderDrink(@Path("ean") String ean, @Query("username") String username, @Header("Authorization") String authHeader);
 
 }

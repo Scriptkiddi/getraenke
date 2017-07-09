@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class Drink {
-    @SerializedName("Ean")
+    @SerializedName("EAN")
     private String ean;
     @SerializedName("Name")
     private String name;

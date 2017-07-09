@@ -148,4 +148,11 @@ public class DosService {
     public Call<Supplier> getSupplier(int permission){
         return service.getSupplier(permission, authHeader);
     }
+
+    public Call<Void> orderDrink(String ean){
+        return service.orderDrink(ean, authHeader);
+    }
+    public Call<Void> orderDrink(String ean, String username){
+        return service.orderDrink(ean, username, authHeader);
+    }
 }
