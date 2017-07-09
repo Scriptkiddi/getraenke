@@ -4,4 +4,9 @@
     <string name="manage_person">manage person</string>
     <string name="title_activity_manage_person">Manage person</string>
     <string name="action_settings">Settings</string>
+    <string name="modify_person_title">Modify Person</string>
+    <string name="nfc_tags_section_label">NFC tags (scan to add)</string>
+    <string name="user_section_label">User</string>
+    <string name="first_name_label">First Name:</string>
+    <string name="last_name_label">Last Name:</string>
 </resources>

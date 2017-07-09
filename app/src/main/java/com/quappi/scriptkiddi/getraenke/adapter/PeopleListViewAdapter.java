@@ -11,6 +11,7 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.quappi.scriptkiddi.getraenke.ListViewDrinks;
+import com.quappi.scriptkiddi.getraenke.ManagePersonActivity;
 import com.quappi.scriptkiddi.getraenke.utils.Person;
 
 import java.util.ArrayList;
@@ -68,6 +69,7 @@ public class PeopleListViewAdapter extends RecyclerView.Adapter<PeopleListViewAd
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView mTextView;
+
         public ViewHolder(TextView v) {
             super(v);
             mTextView = v;
@@ -90,7 +92,7 @@ public class PeopleListViewAdapter extends RecyclerView.Adapter<PeopleListViewAd
                                                                int viewType) {
         // create a new view
         TextView v = (TextView) LayoutInflater.from(parent.getContext())
-              .inflate(android.R.layout.simple_list_item_1, parent, false);
+                .inflate(android.R.layout.simple_list_item_1, parent, false);
         // set the view's size, margins, paddings and layout parameters
 
         ViewHolder vh = new ViewHolder(v);
@@ -111,7 +113,16 @@ public class PeopleListViewAdapter extends RecyclerView.Adapter<PeopleListViewAd
                 v.getContext().startActivity(intent);
             }
         });
-
+        holder.itemView.setLongClickable(true);
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Intent intent = new Intent(view.getContext(), ManagePersonActivity.class);
+                intent.putExtra("Person", mSortedList.get(position));
+                view.getContext().startActivity(intent);
+                return true;
+            }
+        });
     }
 
     public void add(Person model) {

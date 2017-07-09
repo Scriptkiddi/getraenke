@@ -3,7 +3,6 @@ package com.quappi.scriptkiddi.getraenke.utils;
 import android.nfc.Tag;
 
 import com.quappi.scriptkiddi.getraenke.utils.exception.InvalidPersonException;
-import com.quappi.scriptkiddi.getraenke.utils.exception.PermissionDeniedException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,33 +13,29 @@ import java.util.Map;
  * Created by michel on 7/8/17.
  */
 
-public class TagRegister {
+public class NfcTagRegister {
     private HashMap<String, Person> personByTag = new HashMap<>();
     private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
-    private static TagRegister instance = null;
+    private static NfcTagRegister instance = null;
 
-    private TagRegister() {
+    private NfcTagRegister() {
 
     }
 
-    public static TagRegister getInstance() {
+    public static NfcTagRegister getInstance() {
         if (instance == null) {
-            instance = new TagRegister();
+            instance = new NfcTagRegister();
         }
         return instance;
     }
 
     /**
-     * @param editor the user that attempts to add a NFC tag
      * @param tag    NFC tag object
      * @param target user the tag belongs to
-     * @throws PermissionDeniedException if editor user has no permission to modify user
-     * @throws InvalidPersonException    if the person does not exist
+     * @throws InvalidPersonException if the person does not exist
      */
-    public void addNfcTag(Person editor, Tag tag, Person target) throws PermissionDeniedException, InvalidPersonException {
-        if (!editor.getPermissions().canModifyUsers()) {
-            throw new PermissionDeniedException();
-        } else if (target == null) {
+    public void addNfcTag(Tag tag, Person target) throws InvalidPersonException {
+        if (target == null) {
             throw new InvalidPersonException();
         }
         personByTag.put(getNfcTagId(tag), target);
@@ -50,11 +45,8 @@ public class TagRegister {
         return personByTag.get(getNfcTagId(tag));
     }
 
-    public void removeNfcTag(Person editor, Tag tag) throws PermissionDeniedException {
-        if (!editor.getPermissions().canModifyUsers()) {
-            throw new PermissionDeniedException();
-        }
-        personByTag.remove(getNfcTagId(tag));
+    public void removeNfcTag(String tagString) {
+        personByTag.remove(tagString);
     }
 
     public String getNfcTagId(Tag tag) {
