@@ -10,4 +10,8 @@
     <string name="first_name_label">First Name:</string>
     <string name="last_name_label">Last Name:</string>
     <string name="pay_title">Guthaben verwalten</string>
+    <string name="balance_seperator_label">Guthaben</string>
+    <string name="payed_money_separator_label">Geld einzahlen</string>
+    <string name="pay_button">Bezahlen</string>
+    <string name="balance_payed_label">Betrag eingezahlt:</string>
 </resources>

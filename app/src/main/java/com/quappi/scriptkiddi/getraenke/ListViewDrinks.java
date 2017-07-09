@@ -32,7 +32,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
-public class ListViewDrinks extends AppCompatActivity{
+public class ListViewDrinks extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -70,12 +70,19 @@ public class ListViewDrinks extends AppCompatActivity{
         drinks.add(new Drink("Schönbuch Radler", 0.70, 0.33, getDrawable(R.drawable.schoenbuch_naturparkradler)));
         drinks.add(new Drink("CD Helles", 0.70, 0.33, getDrawable(R.drawable.cd_helles)));*/
 
-        this.person = (Person)getIntent().getSerializableExtra("Person");
+        this.person = (Person) getIntent().getSerializableExtra("Person");
         TextView user = (TextView) findViewById(R.id.user);
-        user.setText(String.format("User: %s %s",person.getFirstName(), person.getLastName()));
+        user.setText(String.format("User: %s %s", person.getFirstName(), person.getLastName()));
         TextView moneyOwed = (TextView) findViewById(R.id.money_owed);
         moneyOwed.setText(String.format("Guthaben: %.2f €", person.getCredit()));
-
+        moneyOwed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), PayActivity.class);
+                intent.putExtra("Person", person);
+                startActivity(intent);
+            }
+        });
 
         mAdapter = new DrinksListViewAdapter(drinks, this.person);
         mRecyclerView.setAdapter(mAdapter);
@@ -86,10 +93,6 @@ public class ListViewDrinks extends AppCompatActivity{
                 new IntentIntegrator(ListViewDrinks.this).initiateScan();
             }
         });
-
-
-
-
     }
 
     @Override
@@ -123,8 +126,8 @@ public class ListViewDrinks extends AppCompatActivity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if(result != null) {
-            if(result.getContents() == null) {
+        if (result != null) {
+            if (result.getContents() == null) {
                 Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();

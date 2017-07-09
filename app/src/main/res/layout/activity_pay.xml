@@ -34,6 +34,17 @@
         android:layout_alignParentEnd="true" />
 
     <TextView
+        android:id="@+id/credit_seperator"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimaryText"
+        android:text="@string/balance_seperator_label"
+        android:layout_below="@+id/pay_toolbar"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="19dp" />
+
+    <TextView
         android:id="@+id/current_credit_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,8 +53,48 @@
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="76dp"
         android:layout_marginTop="29dp"
-        android:layout_below="@+id/pay_toolbar"
+        android:layout_below="@+id/credit_seperator"
         android:layout_alignParentStart="true"
         android:layout_marginStart="26dp" />
+
+    <TextView
+        android:id="@+id/pay_seperator"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimaryText"
+        android:text="@string/payed_money_separator_label"
+        android:layout_below="@+id/current_credit"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="25dp" />
+
+    <TextView
+        android:id="@+id/balance_payed_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="37dp"
+        android:text="@string/balance_payed_label"
+        android:layout_below="@+id/pay_seperator"
+        android:layout_alignStart="@+id/current_credit_label" />
+
+    <EditText
+        android:id="@+id/balance_payed_field"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="numberSigned"
+        android:layout_alignBaseline="@+id/balance_payed_label"
+        android:layout_alignBottom="@+id/balance_payed_label"
+        android:layout_toEndOf="@+id/current_credit_label" />
+
+    <Button
+        android:id="@+id/pay_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/pay_button"
+        android:layout_below="@+id/balance_payed_field"
+        android:layout_alignEnd="@+id/balance_payed_field"
+        android:layout_marginEnd="20dp" />
 
 </android.widget.RelativeLayout>
