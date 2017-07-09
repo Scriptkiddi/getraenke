@@ -60,7 +60,8 @@ public class DrinksListViewAdapter extends RecyclerView.Adapter<DrinksListViewAd
             bmImage.setImageBitmap(result);
         }
     }
-    private final Person person;
+
+    private Person person;
     private ArrayList<Drink> mDataset;
     private static final String TAG = "DrinksListViewAdapter";
 
@@ -116,7 +117,7 @@ public class DrinksListViewAdapter extends RecyclerView.Adapter<DrinksListViewAd
 
         holder.drinkPrice.setText(priceString);
         holder.drinkVolume.setText(String.format("%.2f l", mDataset.get(position).getVolume()));
-        new DownloadImageTask(holder.drinkImage).execute(Constants.baseURL+mDataset.get(position).getImgURL());
+        new DownloadImageTask(holder.drinkImage).execute(Constants.baseURL + mDataset.get(position).getImgURL());
 
         holder.drinkImage.setImageDrawable(mDataset.get(position).getImage());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -175,6 +176,9 @@ public class DrinksListViewAdapter extends RecyclerView.Adapter<DrinksListViewAd
 
     }
 
+    public void updatePerson(Person p) {
+        this.person = p;
+    }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override

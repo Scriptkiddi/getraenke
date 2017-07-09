@@ -36,7 +36,7 @@ import java.util.ArrayList;
 public class ListViewDrinks extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private DrinksListViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private Person person;
     private ArrayList<Drink> drinks = new ArrayList<>();
@@ -165,6 +165,7 @@ public class ListViewDrinks extends AppCompatActivity {
         TextView moneyOwed = (TextView) findViewById(R.id.money_owed);
         moneyOwed.setText(String.format("Guthaben: %.2f €", event.getPerson().getCredit()));
         person = event.getPerson();
+        mAdapter.updatePerson(person);
     }
 
     @Subscribe
