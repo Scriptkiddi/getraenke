@@ -37,7 +37,7 @@ public class ListViewPeople extends AppCompatActivity implements SearchView.OnQu
     private PendingIntent pendingIntent;
     private static final String TAG = "ListViewPeople";
     private ArrayList<Person> people = new ArrayList<>();
-    private PersonCache cache = PersonCache.getInstance();
+    private PersonCache cache;
 
 
     @Override
@@ -72,7 +72,7 @@ public class ListViewPeople extends AppCompatActivity implements SearchView.OnQu
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_view_people);
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-
+        cache = PersonCache.getInstance(getApplicationContext());
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
@@ -93,7 +93,7 @@ public class ListViewPeople extends AppCompatActivity implements SearchView.OnQu
                     new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
         }
 
-        PersonCache.getInstance().refreshUserList();
+        PersonCache.getInstance(getApplicationContext()).refreshUserList();
     }
 
 

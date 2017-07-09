@@ -1,5 +1,6 @@
 package com.quappi.scriptkiddi.getraenke.caches;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.google.common.cache.CacheBuilder;
@@ -24,8 +25,6 @@ import java.util.concurrent.TimeUnit;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by fritz on 08.07.17.
@@ -33,25 +32,20 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PersonCache {
     private static PersonCache instance = null;
-    private Retrofit retrofit = new Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("http://35.156.87.172:9080/")
-            .build();
-    private DosService service = retrofit.create(DosService.class);
     private LoadingCache<String, Person> people;
     private HashSet<String> list_of_users = new HashSet<>();
-    private boolean pushToListView = false;
-
-    public static PersonCache getInstance(){
+    private Context context;
+    public static PersonCache getInstance(Context context){
         if(instance == null){
-            instance = new PersonCache();
+            instance = new PersonCache(context);
         }
         return instance;
     }
 
     private static final String TAG = "PersonCache";
 
-    protected PersonCache() {
+    protected PersonCache(final Context context) {
+        this.context = context;
         EventBus.getDefault().register(this);
         people = CacheBuilder.newBuilder().maximumSize(1000)
                 .expireAfterWrite(10, TimeUnit.MINUTES)
@@ -59,7 +53,7 @@ public class PersonCache {
                         new CacheLoader<String, Person>() {
                             public Person load(String key) throws NetworkErrorException{
                                 try {
-                                    Response<Person> response = service.getUser(key).execute();
+                                    Response<Person> response = DosService.getInstance(context).getUser(key).execute();
                                     if(response.code() == 200){
                                         EventBus.getDefault().post(new PersonUpdated(response.body()));
                                         return response.body();
@@ -81,7 +75,7 @@ public class PersonCache {
     }
 
     public void updateUser(String username){
-        service.getUser(username).enqueue(new Callback<Person>() {
+        DosService.getInstance(context).getUser(username).enqueue(new Callback<Person>() {
             @Override
             public void onResponse(Call<Person> call, Response<Person> response) {
                 if(response.code() == 200){
@@ -103,7 +97,7 @@ public class PersonCache {
     }
 
     public void refreshUserList(){
-        Call<List<String>> people_call = service.listUsers();
+        Call<List<String>> people_call = DosService.getInstance(context).getUsers();
         people_call.enqueue(new Callback<List<String>>() {
             @Override
             public void onResponse(Call<List<String>> call, Response<List<String>> response) {

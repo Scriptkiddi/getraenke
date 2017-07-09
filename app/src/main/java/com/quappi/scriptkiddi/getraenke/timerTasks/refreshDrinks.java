@@ -1,6 +1,8 @@
 package com.quappi.scriptkiddi.getraenke.timerTasks;
 
-import com.quappi.scriptkiddi.getraenke.api.DosServiceRetrofit;
+import android.content.Context;
+
+import com.quappi.scriptkiddi.getraenke.api.DosService;
 import com.quappi.scriptkiddi.getraenke.caches.DrinkCache;
 
 import java.util.List;
@@ -15,13 +17,18 @@ import retrofit2.Response;
  */
 
 public class refreshDrinks extends TimerTask {
+    private Context context;
+    public refreshDrinks(Context context) {
+        this.context = context;
+    }
+
     @Override
     public void run() {
-        DosServiceRetrofit.getDosService().listDrinks().enqueue(new Callback<List<String>>() {
+        DosService.getInstance(context).getDrinks().enqueue(new Callback<List<String>>() {
             @Override
             public void onResponse(Call<List<String>> call, Response<List<String>> response) {
                 if (response.isSuccessful()){
-                    DrinkCache.getInstance().updateListDrinks(response.body());
+                    DrinkCache.getInstance(context).updateListDrinks(response.body());
                 }
             }
 
