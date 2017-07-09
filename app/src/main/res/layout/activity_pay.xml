@@ -24,7 +24,7 @@
         android:layout_height="56dp"
         android:background="@color/colorPrimary"
         android:elevation="4dp"
-        android:text="@string/pay_title"
+        app:title="@string/pay_title"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         tools:layout_editor_absoluteY="0dp"
