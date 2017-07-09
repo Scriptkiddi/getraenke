@@ -18,6 +18,7 @@ public class Person implements Serializable {
     @SerializedName("Credit")
     private Double credit;
     @SerializedName("Permissions")
+    private String permissionGroup;
     private Permissions permissions;
 
     public Person(String firstName, String lastName, Permissions permissions) {
@@ -74,6 +75,14 @@ public class Person implements Serializable {
         this.credit = credit;
     }
 
+
+    public String getPermissionGroup() {
+        return permissionGroup;
+    }
+
+    public void setPermissionGroup(String permissionGroup) {
+        this.permissionGroup = permissionGroup;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -92,5 +101,6 @@ public class Person implements Serializable {
         int result = firstName != null ? firstName.hashCode() : 0;
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         return result;
+
     }
 }

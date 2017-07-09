@@ -2,13 +2,20 @@ package com.quappi.scriptkiddi.getraenke.utils;
 
 import android.graphics.drawable.Drawable;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by fritz on 08.07.17.
  */
 
 public class Drink {
+    @SerializedName("Ean")
+    private String ean;
+    @SerializedName("Name")
     private String name;
+    @SerializedName("PriceResell")
     private double resellPrice;
+    @SerializedName("Amount")
     private double volume;
     private Drawable image;
 
