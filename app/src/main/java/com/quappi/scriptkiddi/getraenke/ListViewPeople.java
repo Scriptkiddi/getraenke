@@ -18,14 +18,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.quappi.scriptkiddi.getraenke.adapter.PeopleListViewAdapter;
-import com.quappi.scriptkiddi.getraenke.controller.drinkController;
 import com.quappi.scriptkiddi.getraenke.controller.permissionsController;
 import com.quappi.scriptkiddi.getraenke.controller.personController;
 import com.quappi.scriptkiddi.getraenke.events.PersonControllerInitFinished;
 import com.quappi.scriptkiddi.getraenke.events.PersonUpdated;
 import com.quappi.scriptkiddi.getraenke.utils.NfcTagRegister;
 import com.quappi.scriptkiddi.getraenke.utils.Person;
-
 import com.quappi.scriptkiddi.getraenke.utils.exception.WrongPasswordException;
 
 import org.greenrobot.eventbus.EventBus;

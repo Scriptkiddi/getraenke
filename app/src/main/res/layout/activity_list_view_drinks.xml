@@ -29,6 +29,7 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
         android:elevation="4dp"
+        app:title="@string/choose_drink_title"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
         <RelativeLayout
             android:layout_width="match_parent"

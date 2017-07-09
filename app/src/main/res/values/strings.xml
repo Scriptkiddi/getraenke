@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">getraenke</string>
+    <string name="app_name">DOS</string>
     <string name="check_balance">check balance</string>
     <string name="manage_person">manage person</string>
     <string name="title_activity_manage_person">Manage person</string>
@@ -9,5 +9,11 @@
     <string name="user_section_label">User</string>
     <string name="first_name_label">First Name:</string>
     <string name="last_name_label">Last Name:</string>
-    <string name="pay_title">Guthaben verwalten</string>
+    <string name="pay_title">Manage balance</string>
+    <string name="balance_seperator_label">Balance</string>
+    <string name="payed_money_separator_label">Pay money</string>
+    <string name="pay_button">Pay</string>
+    <string name="balance_payed_label">Amount paid:</string>
+    <string name="choose_person_title">DOS: Choose person</string>
+    <string name="choose_drink_title">DOS: Choose drink</string>
 </resources>

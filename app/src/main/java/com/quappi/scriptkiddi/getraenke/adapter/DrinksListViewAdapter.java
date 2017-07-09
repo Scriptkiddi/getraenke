@@ -1,10 +1,11 @@
 package com.quappi.scriptkiddi.getraenke.adapter;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -33,6 +34,8 @@ import java.util.Locale;
 
 public class DrinksListViewAdapter extends RecyclerView.Adapter<DrinksListViewAdapter.ViewHolder> {
 
+    private final Context context;
+
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
@@ -57,7 +60,8 @@ public class DrinksListViewAdapter extends RecyclerView.Adapter<DrinksListViewAd
             bmImage.setImageBitmap(result);
         }
     }
-    private final Person person;
+
+    private Person person;
     private ArrayList<Drink> mDataset;
     private static final String TAG = "DrinksListViewAdapter";
 
@@ -81,7 +85,8 @@ public class DrinksListViewAdapter extends RecyclerView.Adapter<DrinksListViewAd
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public DrinksListViewAdapter(ArrayList<Drink> myDataset, Person person) {
+    public DrinksListViewAdapter(ArrayList<Drink> myDataset, Person person, Context context) {
+        this.context = context;
         mDataset = myDataset;
         this.person = person;
     }
@@ -112,7 +117,7 @@ public class DrinksListViewAdapter extends RecyclerView.Adapter<DrinksListViewAd
 
         holder.drinkPrice.setText(priceString);
         holder.drinkVolume.setText(String.format("%.2f l", mDataset.get(position).getVolume()));
-        new DownloadImageTask(holder.drinkImage).execute(Constants.baseURL+mDataset.get(position).getImgURL());
+        new DownloadImageTask(holder.drinkImage).execute(Constants.baseURL + mDataset.get(position).getImgURL());
 
         holder.drinkImage.setImageDrawable(mDataset.get(position).getImage());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -128,7 +133,7 @@ public class DrinksListViewAdapter extends RecyclerView.Adapter<DrinksListViewAd
                     public void onClick(DialogInterface dialogInterface, int i) {
                         drinkBuyAction.setValid(true);
                         Log.d(TAG, "send by ok: " + drinkBuyAction);
-                        drinkBuyAction.putOrder();
+                        drinkBuyAction.putOrder(context);
                     }
                 });
                 builder.setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
@@ -136,7 +141,7 @@ public class DrinksListViewAdapter extends RecyclerView.Adapter<DrinksListViewAd
                     public void onClick(DialogInterface dialogInterface, int i) {
                         drinkBuyAction.setValid(false);
                         Log.d(TAG, "aborted order: " + drinkBuyAction);
-                        drinkBuyAction.putOrder();
+                        drinkBuyAction.putOrder(context);
                     }
                 });
 
@@ -151,7 +156,7 @@ public class DrinksListViewAdapter extends RecyclerView.Adapter<DrinksListViewAd
                         if (alert.isShowing()) {
                             alert.dismiss();
                             Log.d(TAG, "send by timeout: " + drinkBuyAction);
-                            drinkBuyAction.putOrder();
+                            drinkBuyAction.putOrder(context);
                         }
                     }
                 };
@@ -171,6 +176,9 @@ public class DrinksListViewAdapter extends RecyclerView.Adapter<DrinksListViewAd
 
     }
 
+    public void updatePerson(Person p) {
+        this.person = p;
+    }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override

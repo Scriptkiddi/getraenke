@@ -103,4 +103,24 @@ public class personController {
     }
 
 
+    public static void refresh(String username, Context context) {
+        DosService.getInstance(context).getUser(username).enqueue(new Callback<Person>() {
+            @Override
+            public void onResponse(Call<Person> call, Response<Person> response) {
+                    if (response.isSuccessful()) {
+                        Person p = response.body();
+                        p.setPermissions(permissionsController.get(p.getPermissionGroup()));
+                        personHashMap.put(response.body().getUsername(), p);
+                        EventBus.getDefault().post(new PersonUpdated(response.body()));
+                    } else {
+                        Log.e(TAG, "Errorcode " + Integer.toString(response.code()));
+                    }
+            }
+
+            @Override
+            public void onFailure(Call<Person> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
+            }
+        });
+    }
 }
