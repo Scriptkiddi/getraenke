@@ -4,17 +4,21 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.graphics.Color;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.quappi.scriptkiddi.getraenke.Constants;
 import com.quappi.scriptkiddi.getraenke.R;
+import com.quappi.scriptkiddi.getraenke.controller.DrinkBuyAction;
 import com.quappi.scriptkiddi.getraenke.utils.Drink;
 import com.quappi.scriptkiddi.getraenke.utils.Person;
 
@@ -55,7 +59,7 @@ public class DrinksListViewAdapter extends RecyclerView.Adapter<DrinksListViewAd
     }
     private final Person person;
     private ArrayList<Drink> mDataset;
-
+    private static final String TAG = "DrinksListViewAdapter";
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -98,12 +102,13 @@ public class DrinksListViewAdapter extends RecyclerView.Adapter<DrinksListViewAd
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.drinkTitle.setText(mDataset.get(position).getName());
         final NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.GERMANY);
-        final String priceString = formatter.format(mDataset.get(position).getResellPrice());
+        final double price = mDataset.get(position).getResellPrice();
+        final String priceString = formatter.format(price);
 
         holder.drinkPrice.setText(priceString);
         holder.drinkVolume.setText(String.format("%.2f l", mDataset.get(position).getVolume()));
@@ -113,26 +118,56 @@ public class DrinksListViewAdapter extends RecyclerView.Adapter<DrinksListViewAd
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                final DrinkBuyAction drinkBuyAction = new DrinkBuyAction(person, mDataset.get(position));
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                builder.setTitle(holder.drinkTitle.getText() + " "+holder.drinkVolume.getText()+" (" + priceString + ") bestellt");
-                builder.setMessage("Neuer Schuldenstand: 42€");
+                builder.setTitle(holder.drinkTitle.getText() + " " + holder.drinkVolume.getText() + " (" + priceString + ") bestellt");
+
+                builder.setMessage(String.format("Neues Guthaben: %.2f €", person.getCredit() - price));
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        //TODO send directly
+                        drinkBuyAction.setValid(true);
+                        Log.d(TAG, "send by ok: " + drinkBuyAction);
+                        drinkBuyAction.putOrder();
                     }
                 });
                 builder.setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        //TODO don't send
+                        drinkBuyAction.setValid(false);
+                        Log.d(TAG, "aborted order: " + drinkBuyAction);
+                        drinkBuyAction.putOrder();
                     }
                 });
-                builder.show();
 
+                final AlertDialog alert = builder.create();
+                alert.show();
+                Button abortButton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+                abortButton.setTextColor(Color.RED);
+                final Handler handler = new Handler();
+                final Runnable runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        if (alert.isShowing()) {
+                            alert.dismiss();
+                            Log.d(TAG, "send by timeout: " + drinkBuyAction);
+                            drinkBuyAction.putOrder();
+                        }
+                    }
+                };
+
+                alert.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        handler.removeCallbacks(runnable);
+                        drinkBuyAction.setValid(true);
+                    }
+                });
+
+                handler.postDelayed(runnable, 10000);
             }
         });
+
 
     }
 
