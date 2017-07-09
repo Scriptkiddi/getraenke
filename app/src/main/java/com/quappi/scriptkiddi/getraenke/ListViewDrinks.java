@@ -143,9 +143,20 @@ public class ListViewDrinks extends AppCompatActivity{
         EventBus.getDefault().unregister(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        drinks.clear();
+        drinks.addAll(drinkController.getAll());
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(DrinkUpdated event) {
-        drinks.add(event.getDrink());
+        if(!drinks.contains(event.getDrink())){
+            drinks.add(event.getDrink());
+        }
+
+
         mAdapter.notifyDataSetChanged();
     }
 
@@ -159,7 +170,9 @@ public class ListViewDrinks extends AppCompatActivity{
     @Subscribe
     public void onMessageEvent(DrinkControllerInitFinished event) {
         Log.d(TAG, "initDrinkController");
+
         drinks.addAll(drinkController.getAll());
+
         mAdapter.notifyDataSetChanged();
     }
 }
